@@ -711,23 +711,11 @@ endif # may-sync-config
 endif # $(dot-config)
 
 KBUILD_CFLAGS	+= $(call cc-option,-fno-delete-null-pointer-checks,)
-KBUILD_CFLAGS	+= $(call cc-disable-warning, aggressive-loop-optimizations)
-KBUILD_CFLAGS	+= $(call cc-disable-warning, frame-address,)
+KBUILD_CFLAGS	+= $(call cc-disable-warning,frame-address,)
 KBUILD_CFLAGS	+= $(call cc-disable-warning, format-truncation)
 KBUILD_CFLAGS	+= $(call cc-disable-warning, format-overflow)
 KBUILD_CFLAGS	+= $(call cc-disable-warning, int-in-bool-context)
 KBUILD_CFLAGS	+= $(call cc-disable-warning, address-of-packed-member)
-KBUILD_CFLAGS	+= $(call cc-disable-warning, attribute-alias)
-KBUILD_CFLAGS	+= $(call cc-disable-warning, packed-not-aligned)
-KBUILD_CFLAGS	+= $(call cc-disable-warning, psabi)
-KBUILD_CFLAGS	+= $(call cc-disable-warning, restrict)
-KBUILD_CFLAGS	+= $(call cc-disable-warning, sequence-point)
-KBUILD_CFLAGS	+= $(call cc-disable-warning, sizeof-pointer-memaccess)
-KBUILD_CFLAGS	+= $(call cc-disable-warning, stringop-overflow)
-KBUILD_CFLAGS	+= $(call cc-disable-warning, stringop-truncation)
-KBUILD_CFLAGS	+= $(call cc-disable-warning, unused-result)
-KBUILD_CFLAGS	+= $(call cc-disable-warning, unused-value)
-KBUILD_CFLAGS	+= $(call cc-disable-warning, zero-length-bounds)
 
 ifdef CONFIG_CC_OPTIMIZE_FOR_SIZE
 KBUILD_CFLAGS   += -Os
@@ -834,11 +822,7 @@ KBUILD_CFLAGS	+= -enable-trivial-auto-var-init-zero-knowing-it-will-be-removed-f
 endif
 endif
 
-# Workaround for GCC versions < 5.0
-# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=61801
-ifdef CONFIG_CC_IS_GCC
-KBUILD_CFLAGS   += $(call cc-ifversion, -lt, 0500, $(call cc-option, -fno-var-tracking-assignments))
-endif
+KBUILD_CFLAGS   += $(call cc-option, -fno-var-tracking-assignments)
 
 KBUILD_CFLAGS   += $(call cc-option, -Wvla)
 
@@ -1005,6 +989,9 @@ KBUILD_CFLAGS	+= $(call cc-option,-fmerge-constants)
 
 # Make sure -fstack-check isn't enabled (like gentoo apparently did)
 KBUILD_CFLAGS  += $(call cc-option,-fno-stack-check,)
+
+# conserve stack if available
+KBUILD_CFLAGS   += $(call cc-option,-fconserve-stack)
 
 # disallow errors like 'EXPORT_GPL(foo);' with missing header
 KBUILD_CFLAGS   += $(call cc-option,-Werror=implicit-int)
