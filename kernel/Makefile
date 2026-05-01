@@ -131,8 +131,8 @@ $(obj)/configs.o: $(obj)/config_data.h
 targets += config_data.gz
 ifeq ($(CONFIG_TARGET_PROJECT_K7T),y)
 $(obj)/config_data.gz: arch/arm64/configs/vendor/spes-stock_defconfig FORCE
-else ifeq ($(CONFIG_TARGET_PROJECT_C3Q),y)
-$(obj)/config_data.gz: arch/arm64/configs/fog-stock_defconfig FORCE
+# else ifeq ($(CONFIG_TARGET_PROJECT_C3Q),y)
+# $(obj)/config_data.gz: arch/arm64/configs/fog-stock_defconfig FORCE
 else
 $(obj)/config_data.gz: $(KCONFIG_CONFIG) FORCE
 endif
